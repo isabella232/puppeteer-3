@@ -1,0 +1,29 @@
+--- puppeteer-new/lib/FrameManager.js	2018-10-30 04:10:36.000000000 +0800
++++ puppeteer-new2/lib/FrameManager.js	2018-10-30 04:11:28.000000000 +0800
+@@ -36,7 +36,7 @@
+     this._client = client;
+     this._page = page;
+     this._networkManager = networkManager;
+-    this._defaultNavigationTimeout = 180000;
++    this._defaultNavigationTimeout = 30000;
+     /** @type {!Map<string, !Frame>} */
+     this._frames = new Map();
+     /** @type {!Map<number, !ExecutionContext>} */
+@@ -819,7 +819,7 @@
+    * @return {!Promise}
+    */
+   waitForFunction(pageFunction, options = {}, ...args) {
+-    const timeout = helper.isNumber(options.timeout) ? options.timeout : 180000;
++    const timeout = helper.isNumber(options.timeout) ? options.timeout : 30000;
+     const polling = options.polling || 'raf';
+     return new WaitTask(this, pageFunction, 'function', polling, timeout, ...args).promise;
+   }
+@@ -841,7 +841,7 @@
+     const waitForVisible = !!options.visible;
+     const waitForHidden = !!options.hidden;
+     const polling = waitForVisible || waitForHidden ? 'raf' : 'mutation';
+-    const timeout = helper.isNumber(options.timeout) ? options.timeout : 180000;
++    const timeout = helper.isNumber(options.timeout) ? options.timeout : 30000;
+     const title = `${isXPath ? 'XPath' : 'selector'} "${selectorOrXPath}"${waitForHidden ? ' to be hidden' : ''}`;
+     return new WaitTask(this, predicate, title, polling, timeout, selectorOrXPath, isXPath, waitForVisible, waitForHidden).promise;
+ 

@@ -1,0 +1,57 @@
+--- puppeteer-new/lib/Page.js	2018-10-30 04:10:27.000000000 +0800
++++ puppeteer-new2/lib/Page.js	2018-10-30 04:11:28.000000000 +0800
+@@ -236,13 +236,6 @@
+   }
+ 
+   /**
+-   * @return {!Array<!Worker>}
+-   */
+-  workers() {
+-    return Array.from(this._workers.values());
+-  }
+-
+-  /**
+    * @param {boolean} value
+    */
+   async setRequestInterception(value) {
+@@ -612,7 +605,7 @@
+    * @return {!Promise<!Puppeteer.Request>}
+    */
+   async waitForRequest(urlOrPredicate, options = {}) {
+-    const timeout = typeof options.timeout === 'number' ? options.timeout : 180000;
++    const timeout = typeof options.timeout === 'number' ? options.timeout : 30000;
+     return helper.waitForEvent(this._networkManager, NetworkManager.Events.Request, request => {
+       if (helper.isString(urlOrPredicate))
+         return (urlOrPredicate === request.url());
+@@ -628,7 +621,7 @@
+    * @return {!Promise<!Puppeteer.Response>}
+    */
+   async waitForResponse(urlOrPredicate, options = {}) {
+-    const timeout = typeof options.timeout === 'number' ? options.timeout : 180000;
++    const timeout = typeof options.timeout === 'number' ? options.timeout : 30000;
+     return helper.waitForEvent(this._networkManager, NetworkManager.Events.Response, response => {
+       if (helper.isString(urlOrPredicate))
+         return (urlOrPredicate === response.url());
+@@ -797,7 +790,7 @@
+    * @return {!Promise<!Buffer|!String>}
+    */
+   async _screenshotTask(format, options) {
+-    //await this._client.send('Target.activateTarget', {targetId: this._target._targetId});
++    await this._client.send('Target.activateTarget', {targetId: this._target._targetId});
+     let clip = options.clip ? Object.assign({}, options['clip']) : undefined;
+     if (clip)
+       clip.scale = 1;
+@@ -917,13 +910,6 @@
+   }
+ 
+   /**
+-   * @return {boolean}
+-   */
+-  isClosed() {
+-    return this._closed;
+-  }
+-
+-  /**
+    * @return {!Mouse}
+    */
+   get mouse() {
